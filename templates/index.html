@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algoritmo Genético</title>
+    <!-- Agrega los enlaces a Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Algoritmo Genético</h1>
+
+        <!-- Utiliza la clase "row" para agrupar las columnas -->
+        <div class="row">
+
+            <!-- Primera columna para el formulario -->
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Configuración del Algoritmo</h5>
+                        <!-- Formulario con campos para ingresar datos -->
+                        <form id="geneticoForm">
+                            <div class="form-group">
+                                <label for="max_iter">Número máximo de iteraciones:</label>
+                                <input type="text" class="form-control" id="max_iter" name="max_iter" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="max_poblacion">Tamaño máximo de la población:</label>
+                                <input type="text" class="form-control" id="max_poblacion" name="max_poblacion" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="num_vars">Número de variables:</label>
+                                <input type="text" class="form-control" id="num_vars" name="num_vars" required>
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="ejecutarAlgoritmo()">Ejecutar Algoritmo</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Segunda columna para el resultado -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Resultado</h5>
+                        <div id="resultado">
+                            <!-- Agrega una tabla para mostrar el resultado -->
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Mejor Gen encontrado</th>
+                                        <th>Función de adaptación</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td id="mejor_gen"></td>
+                                        <td id="adaptacion"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Agrega los enlaces a Bootstrap JS y Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <script>
+        function ejecutarAlgoritmo() {
+            var form = document.getElementById("geneticoForm");
+            var formData = new FormData(form);
+
+            fetch('/algoritmo_genetico', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Actualiza los resultados en la tabla
+                document.getElementById("mejor_gen").innerText = data.mejor_gen;
+                document.getElementById("adaptacion").innerText = data.adaptacion;
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
